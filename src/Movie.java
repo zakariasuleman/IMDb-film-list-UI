@@ -1,6 +1,5 @@
-import javafx.scene.text.Font;
 
-public class Movie {
+public class Movie implements Cloneable, Comparable<Movie> {
 
     private String filmName;
     private String director;
@@ -57,9 +56,22 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    //
+    public Object clone() throws
+            CloneNotSupportedException
+    {
+        return super.clone();
+    }
+
     @Override
     public String toString() {
         return
                 "["+"Film: " + filmName + ", " + " Director: " + director + ", " + " Awards Won: " + awardsWon +", "+ "Release Date: " + releaseDate +", " + "Film Rating: " + filmRating+"]";
+    }
+
+    @Override
+    public int compareTo(Movie otherMovie) {
+
+        return this.getReleaseDate()-otherMovie.getReleaseDate();
     }
 }

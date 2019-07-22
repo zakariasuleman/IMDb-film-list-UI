@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
-    A list management program that implements an array of objects made from an object class (Movie). In that list of objects, user can
+ A list management program that implements an array of objects made from an object class (Movie). In that list of objects, user can
  remove, add, edit, and search. The searchable string we use is the film name and that is what is only allowed by the input of the textField
  (javaFX). The user interface is very easy to use and quick. Buttons on the UI have a task that can be understood just by reading them.
  @author: Zakaria Suleman
@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  @borrowedcode: Lines URL: https://docs.oracle.com/javafx/2/get_started/form.htm#CFHIJGHC (Fig 2-2)
  */
 
-    public class MainClass extends Application {
+public class MainClass extends Application {
 
     MovieList movieList = emptyList();
 
@@ -30,6 +30,7 @@ import javafx.stage.Stage;
     /**
      * In this start method all the button characteristics and positions are declared and instantiated. Also inside there is setAction methods
      * with handles to put an action and a call back to the movieList class for the methods I wrote. i.e Remove, Add, Search, and AddDefaultData.
+     *
      * @param primaryStage
      */
     @Override
@@ -42,42 +43,45 @@ import javafx.stage.Stage;
         TextField awardsKey = new TextField("");
         TextField releaseKey = new TextField("");
         TextField ratingKey = new TextField("");
-        Label filmLabel = new Label("Enter Film Name");
-        Label dirLabel = new Label("Enter Film Director");
-        Label awardsLabel = new Label("Enter Film Awards");
-        Label yearLabel = new Label("Enter Film Year");
-        Label ratingLabel = new Label("Enter Film Rating");
+        Label filmLabel = new Label(" Enter Film Name");
+        Label dirLabel = new Label(" Enter Film Director");
+        Label awardsLabel = new Label(" Enter Film Awards");
+        Label yearLabel = new Label(" Enter Film Year");
+        Label ratingLabel = new Label(" Enter Film Rating");
 
 
         Button btnAddDefaultData = new Button("Default Data");
         Button btnAdd = new Button("Add film (edited or non-edited)");
         Button btnRemove = new Button("Remove by Film Name");
         Button btnSearch = new Button("Search by Film Name");
-
+        Button btnCopy = new Button("Clone Film");
+        Button btnSort = new Button("Sort by date");
 
 
         TextArea list = new TextArea(movieList.display());
         grid.add(list, 0, 0);
-        grid.add(btnAddDefaultData, 0,1);
-        grid.add(searchKey,0,8);
-        grid.add(directorKey,0,9);
-        grid.add(awardsKey,0,10);
-        grid.add(releaseKey,0,11);
-        grid.add(ratingKey,0,12);
-        grid.add(filmLabel,0,8);
-        grid.add(dirLabel,0,9);
-        grid.add(awardsLabel,0,10);
-        grid.add(yearLabel,0,11);
-        grid.add(ratingLabel,0,12);
-
-        grid.add(btnAdd,0,3);
-        grid.add(btnSearch,0,2);
-        grid.add(btnRemove,0,4);
+        grid.add(btnAddDefaultData, 0, 1);
+        grid.add(searchKey, 0, 8);
+        grid.add(directorKey, 0, 9);
+        grid.add(awardsKey, 0, 10);
+        grid.add(releaseKey, 0, 11);
+        grid.add(ratingKey, 0, 12);
+        grid.add(filmLabel, 0, 8);
+        grid.add(dirLabel, 0, 9);
+        grid.add(awardsLabel, 0, 10);
+        grid.add(yearLabel, 0, 11);
+        grid.add(ratingLabel, 0, 12);
+        grid.add(btnAdd, 0, 3);
+        grid.add(btnSearch, 0, 2);
+        grid.add(btnRemove, 0, 4);
+        grid.add(btnCopy, 0, 5);
+        grid.add(btnSort, 0, 6);
         searchKey.setAlignment(Pos.TOP_RIGHT);
         directorKey.setAlignment(Pos.TOP_RIGHT);
         awardsKey.setAlignment(Pos.TOP_RIGHT);
         releaseKey.setAlignment(Pos.TOP_RIGHT);
         ratingKey.setAlignment(Pos.TOP_RIGHT);
+
 
         //setOnAction method puts a method call to a button
         btnAddDefaultData.setOnAction(new EventHandler<ActionEvent>() {
@@ -89,11 +93,6 @@ import javafx.stage.Stage;
             @Override
             public void handle(ActionEvent event) {
 
-                //what you had before:
-                //MovieList movieListAdd = dataList();
-                //movieListAdd.display();
-
-                //what I recommend:
                 movieList = dataList();
                 movieList.display();
                 list.setText(movieList.display());
@@ -117,8 +116,7 @@ import javafx.stage.Stage;
                     Movie chosen = new Movie(typedName, typedDirector, getFilmAwards, getFilmYear, getFilmRating);
                     movieList.add(chosen);
                     list.setText(movieList.display());
-                }
-                catch(NumberFormatException ex){
+                } catch (NumberFormatException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setContentText("You didn't enter a number where one was expected. Please check you input and try again.");
@@ -137,9 +135,9 @@ import javafx.stage.Stage;
 
                 String typed = searchKey.getText();
                 Movie chosen = movieList.remove(typed);
-                if(chosen!=null) {
+                if (chosen != null) {
                     list.setText(movieList.display());
-                }else{
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setContentText("That film wasn't found. Try adding it before you remove it!");
@@ -159,18 +157,73 @@ import javafx.stage.Stage;
                 String typed = searchKey.getText();
                 Movie chosen = movieList.search(typed);
 
-                if(chosen!=null) {
+                if (chosen != null) {
                     searchKey.setText(chosen.getFilmName());
                     directorKey.setText(chosen.getDirector());
                     awardsKey.setText(String.valueOf(chosen.getAwardsWon()));
                     releaseKey.setText(String.valueOf(chosen.getReleaseDate()));
                     ratingKey.setText(String.valueOf(chosen.getFilmRating()));
-                }else{
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setContentText("That film wasn't found. Try adding it!");
                     alert.showAndWait();
                 }
+            }
+        });
+        btnCopy.setOnAction(new EventHandler<ActionEvent>() {
+
+            /**
+             * Copy button action
+             * @param event
+             */
+            @Override
+            public void handle(ActionEvent event) {
+                String typed = searchKey.getText();
+                Movie chosen = movieList.search(typed);
+
+                if (chosen != null) try {
+                    chosen.clone();
+                    int numberOfCopy = 0;
+                    //save it as a variable. You could reuse the chosen variable if you wanted, so:
+                    chosen = (Movie) chosen.clone();
+                    //then, add it to your Movie list
+                    movieList.add(chosen);
+                    //change the film name of the movie so it has "(Copy)" at the end
+                    //call the method to update your GUI so that your new movie appears in the GUI also
+                    list.setText(movieList.display());
+                    searchKey.setText(chosen.getFilmName());
+                    directorKey.setText(chosen.getDirector());
+                    awardsKey.setText(String.valueOf(chosen.getAwardsWon()));
+                    releaseKey.setText(String.valueOf(chosen.getReleaseDate()));
+                    ratingKey.setText(String.valueOf(chosen.getFilmRating()));
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setContentText("The film clone failed! Try again!");
+                    alert.showAndWait();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setContentText("That film wasn't found. Try adding it!");
+                    alert.showAndWait();
+                }
+            }
+        });
+        btnSort.setOnAction(new EventHandler<ActionEvent>() {
+
+            /**
+             * Sort button action
+             * @param event
+             */
+            @Override
+            public void handle(ActionEvent event) {
+                //1. call movieList.sortByDate();
+                movieList.sortByDate();
+                //2. update the GUI's list (hint: look at your other handle methods. It will start with list.setText(...))
+                list.setText(movieList.display());
             }
         });
 
@@ -186,10 +239,9 @@ import javafx.stage.Stage;
     }
 
     /**
-     *
      * @return mlemp - empty list.
      */
-    public MovieList emptyList(){
+    public MovieList emptyList() {
 
         MovieList mlemp = new MovieList(20);
 
@@ -198,6 +250,7 @@ import javafx.stage.Stage;
 
     /**
      * This is the data class with some preset movie choices that can be edited in the GUI.
+     *
      * @return ml
      */
     public MovieList dataList(){
@@ -230,6 +283,7 @@ import javafx.stage.Stage;
 
         return ml;
     }
+
+
+
 }
-
-
