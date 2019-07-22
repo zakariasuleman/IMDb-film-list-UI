@@ -215,7 +215,7 @@ public class MainClass extends Application {
         btnSort.setOnAction(new EventHandler<ActionEvent>() {
 
             /**
-             * Sort button action
+             * Sort button action n
              * @param event
              */
             @Override
