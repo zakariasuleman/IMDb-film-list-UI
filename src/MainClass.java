@@ -9,12 +9,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- A list management program that implements an array of objects made from an object class (Movie). In that list of objects, user can
+ A list management program that implements an array of objects (that is iterated by an the ListIterator) made from an object class (Movie). In that list of objects, user can
  remove, add, edit, and search. The searchable string we use is the film name and that is what is only allowed by the input of the textField
  (javaFX). The user interface is very easy to use and quick. Buttons on the UI have a task that can be understood just by reading them.
  @author: Zakaria Suleman
- @version: 1.0
- @due: 06/25/2019
+ @version: 2.0
+ @due: 07/23/2019
  @borrowedcode: Lines URL: https://docs.oracle.com/javafx/2/get_started/form.htm#CFHIJGHC (Fig 2-2)
  */
 
@@ -127,7 +127,7 @@ public class MainClass extends Application {
         btnRemove.setOnAction(new EventHandler<ActionEvent>() {
 
             /**
-             * Remove button
+             * Remove button, uses the remove() to actually remove the method from the array and list.
              * @param event
              */
             @Override
@@ -147,7 +147,6 @@ public class MainClass extends Application {
         });
 
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
-
             /**
              * Search button action
              * @param event
@@ -185,12 +184,11 @@ public class MainClass extends Application {
                 if (chosen != null) try {
                     chosen.clone();
                     int numberOfCopy = 0;
-                    //save it as a variable. You could reuse the chosen variable if you wanted, so:
+                    // clone is casted to a Movie object
                     chosen = (Movie) chosen.clone();
-                    //then, add it to your Movie list
+                    //adds the chosen (copied film object) into the array
                     movieList.add(chosen);
-                    //change the film name of the movie so it has "(Copy)" at the end
-                    //call the method to update your GUI so that your new movie appears in the GUI also
+                    //copied attributes
                     list.setText(movieList.display());
                     searchKey.setText(chosen.getFilmName());
                     directorKey.setText(chosen.getDirector());
@@ -215,14 +213,12 @@ public class MainClass extends Application {
         btnSort.setOnAction(new EventHandler<ActionEvent>() {
 
             /**
-             * Sort button action n
+             * Sort button action
              * @param event
              */
             @Override
             public void handle(ActionEvent event) {
-                //1. call movieList.sortByDate();
                 movieList.sortByDate();
-                //2. update the GUI's list (hint: look at your other handle methods. It will start with list.setText(...))
                 list.setText(movieList.display());
             }
         });
@@ -243,14 +239,13 @@ public class MainClass extends Application {
      */
     public MovieList emptyList() {
 
-        MovieList mlemp = new MovieList(20);
+        MovieList mlemp =new MovieList(20);
 
         return mlemp;
     }
 
     /**
-     * This is the data class with some preset movie choices that can be edited in the GUI.
-     *
+     * This is the data (movie objects) class with some preset movie choices that can be edited in the GUI
      * @return ml
      */
     public MovieList dataList(){
@@ -283,7 +278,4 @@ public class MainClass extends Application {
 
         return ml;
     }
-
-
-
 }

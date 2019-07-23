@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-class ListIterator<Movie> implements Iterator<Movie> {
+    public class ListIterator<Movie> implements Iterator<Movie> {
     private int current;
     private Movie[] movieList;
 

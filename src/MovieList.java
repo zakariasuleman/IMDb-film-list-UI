@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -8,10 +7,10 @@ public class MovieList implements Iterable<Movie> {
     private int beginningIndex = 0;
 
     /**
-     *
+     * creates and caps the listSize for the array to make sure it doesn't go over that
      * @param listSize - asks constructor how big is list
      */
-    MovieList(int listSize){
+    public MovieList(int listSize){
 
         this.movieList = new Movie[listSize];
 
@@ -42,7 +41,7 @@ public class MovieList implements Iterable<Movie> {
     }
 
     /**
-     *
+     * This methods removes the selected index from the array of objects, if not there the error is handled
      * @param film the title of the film to remove
      * @return the movie object that was removed or if no movie object found then return null
      */
@@ -65,7 +64,7 @@ public class MovieList implements Iterable<Movie> {
     }
 
     /**
-     *
+     * This method searches for the object that is searched by the Searchable string button on the UI
      * @param target is to see if the movie object is in the list currently
      * @return the currentFilm if found a movie or null if program hasn't found anything
      */
@@ -86,26 +85,7 @@ public class MovieList implements Iterable<Movie> {
         //found nothing
         return null;
     }
-/*
-    public Movie search(String target){
 
-        for(int i = 0; i<movieList.length; i++){
-
-            Movie currentFilm = movieList[i];
-
-            //check to see if the list exists
-            if (movieList[i]!=null) {
-                String movieName = currentFilm.getFilmName();
-                if(target.equalsIgnoreCase(movieName)){
-                    return currentFilm;
-                }
-            }
-        }
-
-        //found nothing
-        return null;
-    }
-*/
     /**
      * Displays on a big String each film object
      * @return descFilm a big string of the film objects
@@ -122,53 +102,45 @@ public class MovieList implements Iterable<Movie> {
         }
         return descFilm;
     }
-    /*
-    public String display(){
 
-            String descFilm= "";
-
-            for(int i = 0; i < movieList.length; i++){
-                if(movieList[i]!=null) {
-                    descFilm += movieList[i].toString() + "";
-                }
-            }
-            return descFilm;
-        }
-    */
     @Override
+    /**
+     * Method to iterate through our array of movies. see more in the ListIterator class
+     * @return returns an iterated list of movieList
+     */
     public Iterator<Movie> iterator() {
         return new ListIterator<Movie>(movieList);
     }
 
+    /**
+     *This method was used for sorting a new array out to sort by releaseDates (int) it couldn't have happened without
+     * the Comparable interface we implemented in the Movie class. In order to get Arrays.sort() to work, there
+     * couldn't be any null values in the sort range
+     * so a for loop was written to copy the old array into a new one and filter out any null values in between
+     */
     public void sortByDate(){
-        //The overview:
-        int listSize = 10;
-        //You want to sort your movieList array using compareTo()
-        //There's a method that will make this really easy:
-        //Arrays.sort(movieList, 0, beginningIndex)
-        Arrays.sort(movieList, 0, beginningIndex);
-        //You'll need to ask your IDE to import Arrays
-        //The trouble with this is that it won't work if there are null values in your array
-        //So you'll need to take out the null values first.
 
-        //The steps:
-        //1. Get rid of the null values
-        //      - create a new array of the same size as movieList
-        Movie[] newList = new Movie[listSize];
+        Movie[] newList = new Movie[movieList.length];
+        Movie film;
 
+        int newIndex = 0;
 
-        //      - copy everything from the old movieList into the new movieList
-        //				- don't copy over null values! Make sure there are no nulls between each Movie
-        //				- it's ok if there are null values at the very end
-        //      - set movieList = your new array with no null values
-        //		- set beginningIndex = the new beginningIndex (the index of the first null value in your new array)
-        //2. Call Arrays.sort(movieList, 0, beginningIndex)
-        if(newList!=null) {
+        for(int originalIndex = 0; originalIndex<beginningIndex; originalIndex++){
 
-            Arrays.sort(movieList, 0, beginningIndex);
+            if(movieList[originalIndex]!=null){
+                film = movieList[originalIndex];
+                newList[newIndex] = film;
+                newIndex++;
+            }else{
+
+            }
+
         }
+        //new empty array
+        movieList = newList;
+        //the index of the first null value in the new array
+        beginningIndex = newIndex;
+        Arrays.sort(movieList, 0, beginningIndex);
+
     }
 }
-
-
-

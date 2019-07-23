@@ -1,4 +1,4 @@
-
+/* implementing Cloneable and Comparable of a Movie object */
 public class Movie implements Cloneable, Comparable<Movie> {
 
     private String filmName;
@@ -6,7 +6,6 @@ public class Movie implements Cloneable, Comparable<Movie> {
     private int awardsWon;
     private int releaseDate;
     private double filmRating;
-
 
     public Movie(String filmName, String director, int awardsWon, int releaseDate,double filmRating) {
         this.awardsWon = awardsWon;
@@ -56,7 +55,12 @@ public class Movie implements Cloneable, Comparable<Movie> {
         this.releaseDate = releaseDate;
     }
 
-    //
+    /**
+     *
+     * @return will return the same copy of the object with the same characteristics ; will later be used in the jAVAfx to copy and put into
+     * the array of the list
+     * @throws CloneNotSupportedException
+     */
     public Object clone() throws
             CloneNotSupportedException
     {
@@ -64,11 +68,19 @@ public class Movie implements Cloneable, Comparable<Movie> {
     }
 
     @Override
+    /**
+     * @return will create a format for the list of data
+     */
     public String toString() {
         return
                 "["+"Film: " + filmName + ", " + " Director: " + director + ", " + " Awards Won: " + awardsWon +", "+ "Release Date: " + releaseDate +", " + "Film Rating: " + filmRating+"]";
     }
 
+    /**
+     * @param  otherMovie this methods compares two objects's
+     * releaseDate to further sort the list in the compareTo method
+     * @return the subtraction of the two movie's to sort the releaseDates
+     */
     @Override
     public int compareTo(Movie otherMovie) {
 
